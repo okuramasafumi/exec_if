@@ -1,6 +1,6 @@
 # ExecIf
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/exec_if`. To experiment with that code, run `bin/console` for an interactive prompt.
+This gem adds `exec_if` method to `Object` class.
 
 TODO: Delete this and the text above, and describe your gem
 
@@ -22,7 +22,22 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require 'exec_if'
+
+[1, 2, 3, 4, 5].map do |i|
+  i.exec_if(i.even?) {|even| 'even' }
+end # => [1, 'even', 3, 'even', 5]
+```
+
+It is especially useful for long method chains.
+
+```ruby
+Item.active.
+  exec_if(params[:published_to].presence) {|item, published_to| item.where(published_at: nil..published_to) }.
+  exec_if(params[:name].presence) {|item, name| item.where("name LIKE ?", "%#{name}%")}.
+  order(published_at: :desc)
+```
 
 ## Development
 

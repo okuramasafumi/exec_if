@@ -1,6 +1,11 @@
 require "exec_if/version"
 
-module ExecIf
-  class Error < StandardError; end
-  # Your code goes here...
+class Object
+  def exec_if(obj, &blk)
+    if obj
+      blk.call(self, obj)
+    else
+      self
+    end
+  end
 end

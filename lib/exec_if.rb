@@ -1,5 +1,3 @@
-require "exec_if/version"
-
 class Object
   def exec_if(obj, &blk)
     case obj

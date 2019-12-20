@@ -60,21 +60,21 @@ class ExecIfTest < Minitest::Test
 
   def test_it_executes_block_if_argument_is_a_string_and_result_of_eval_is_truthy
     assert_output "foo" do
-      @return = @object.exec_if('42.is_a?(Integer)') { print 'foo'; 'foo' }
+      @return = @object.exec_if('is_a?(String)') { print 'foo'; 'foo' }
     end
     assert_equal 'foo', @return
   end
 
   def test_it_does_not_execute_block_and_returns_self_if_argument_is_a_string_and_result_of_eval_is_falsy
     assert_output "" do
-      @return = @object.exec_if('42.is_a?(String)') { print 'foo'; 'foo' }
+      @return = @object.exec_if('is_a?(Integer)') { print 'foo'; 'foo' }
     end
     assert_equal @object, @return
   end
 
   def test_it_executes_block_with_self_and_argument
     assert_output "foobar: 1" do
-      @object.exec_if(1) {|obj, i| print "#{obj}: #{i}"}
+      @object.exec_if(1) {|i| print "#{self}: #{i}"}
     end
   end
 end

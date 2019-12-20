@@ -24,7 +24,7 @@ Or install it yourself as:
 require 'exec_if'
 
 [1, 2, 3, 4, 5].map do |i|
-  i.exec_if(i.even?) {|even| 'even' }
+  i.exec_if(i.even?) { 'even' }
 end # => [1, 'even', 3, 'even', 5]
 ```
 
@@ -32,10 +32,19 @@ It is especially useful for long method chains.
 
 ```ruby
 Item.active.
-  exec_if(params[:published_to].presence) {|item, published_to| item.where(published_at: nil..published_to) }.
-  exec_if(params[:name].presence) {|item, name| item.where("name LIKE ?", "%#{name}%")}.
+  exec_if(params[:published_to].present?) { where(published_at: nil..params[:published_to]) }.
+  exec_if(params[:name].present?) { where("name LIKE ?", "%#{params[:name]}%")}.
   order(published_at: :desc)
 ```
+
+Condition part of `exec_if` can be one of these:
+
+* `Proc`, which is called with self
+* `Symbol`, which is the name of the message of send
+* `String`, which is `eval`uated in context of self
+* `Object`, which is simply used to check truthyness
+
+See `examples` directory for usage.
 
 ## Development
 
